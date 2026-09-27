@@ -10,6 +10,7 @@
   <header>
     <h1>Second Closet</h1>
     <p class="tagline">A second-hand clothing marketplace. Give your clothes a second life.</p>
+    <p class="stats">{{ stats.available }} available &middot; {{ stats.sold }} sold</p>
   </header>
 
   <main>
@@ -42,11 +43,17 @@
 
     <section class="grid">
       {% for item in items %}
-      <article class="card">
+      <article class="card {% if item.status == 'Sold' %}sold{% endif %}">
+        <span class="badge">{{ item.status }}</span>
         <h3>{{ item.name }}</h3>
         <p class="meta">{{ item.category }} &middot; {{ item.size if item.size == 'Free Size' else 'Size ' ~ item.size }} &middot; {{ item.condition }}</p>
         <p class="price">Rs {{ item.price }}</p>
         <p class="seller">Seller: {{ item.seller }}</p>
+        {% if item.status == 'Available' %}
+        <form method="POST" action="/items/{{ item.id }}/buy">
+          <button type="submit">Buy</button>
+        </form>
+        {% endif %}
       </article>
       {% else %}
       <p class="empty">No items here yet. List the first one!</p>

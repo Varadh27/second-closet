@@ -5,7 +5,7 @@ Pages are rendered by the server from in-memory data on every request.
 """
 import os
 
-from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask import Flask, abort, jsonify, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 
@@ -54,6 +54,10 @@ def reset_store(seed=True):
             add_item(*row)
 
 
+def find_item(item_id):
+    return next((item for item in items if item["id"] == item_id), None)
+
+
 def validate_listing(form):
     """Return (clean_data, errors) for a submitted listing form."""
     errors = []
@@ -88,8 +92,12 @@ def validate_listing(form):
 
 
 def render_home(errors=None, form=None, status_code=200):
+    stats = {
+        "available": sum(1 for i in items if i["status"] == "Available"),
+        "sold": sum(1 for i in items if i["status"] == "Sold"),
+    }
     page = render_template(
-        "index.html", items=items, commit=COMMIT,
+        "index.html", items=items, stats=stats, commit=COMMIT,
         categories=CATEGORIES, sizes=SIZES, conditions=CONDITIONS,
         errors=errors or [], form=form or {},
     )
@@ -107,6 +115,17 @@ def create_item():
     if errors:
         return render_home(errors=errors, form=request.form, status_code=400)
     add_item(**data)
+    return redirect(url_for("home"))
+
+
+@app.route("/items/<int:item_id>/buy", methods=["POST"])
+def buy_item(item_id):
+    item = find_item(item_id)
+    if item is None:
+        abort(404)
+    if item["status"] == "Sold":
+        return "This item has already been sold.", 409
+    item["status"] = "Sold"
     return redirect(url_for("home"))
 
 
