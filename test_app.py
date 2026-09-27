@@ -46,7 +46,7 @@ def test_add_valid_item(client):
 
 def test_negative_price_rejected(client):
     res = client.post("/items", data={**VALID, "price": "-50"})
-    assert res.status_code == 201
+    assert res.status_code == 400
     assert items == []
 
 
