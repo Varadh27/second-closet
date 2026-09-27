@@ -110,6 +110,11 @@ def create_item():
     return redirect(url_for("home"))
 
 
+@app.route("/api/items")
+def api_items():
+    return jsonify(items)
+
+
 @app.route("/health")
 def health():
     return jsonify({"status": "ok", "commit": COMMIT})
