@@ -76,3 +76,16 @@ def test_cannot_buy_sold_item_twice(client):
 
 def test_buy_missing_item_returns_404(client):
     assert client.post("/items/999/buy").status_code == 404
+
+
+def test_filter_by_category_and_price(client):
+    client.post("/items", data=VALID)
+    client.post("/items", data={**VALID, "name": "Linen shirt", "category": "Tops", "price": "300"})
+    tops = client.get("/api/items?category=Tops").json
+    assert [i["name"] for i in tops] == ["Linen shirt"]
+    cheap = client.get("/api/items?max_price=500").json
+    assert len(cheap) == 1
+
+
+def test_invalid_max_price_rejected(client):
+    assert client.get("/api/items?max_price=abc").status_code == 400

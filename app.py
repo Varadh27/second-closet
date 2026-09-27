@@ -91,15 +91,30 @@ def validate_listing(form):
     return data, errors
 
 
+def filter_items(category=None, status=None, max_price=None):
+    result = items
+    if category:
+        result = [i for i in result if i["category"] == category]
+    if status:
+        result = [i for i in result if i["status"] == status]
+    if max_price is not None:
+        result = [i for i in result if i["price"] <= max_price]
+    return result
+
+
 def render_home(errors=None, form=None, status_code=200):
+    category = request.args.get("category", "")
+    if category not in CATEGORIES:
+        category = ""
+    shown = filter_items(category=category or None)
     stats = {
         "available": sum(1 for i in items if i["status"] == "Available"),
         "sold": sum(1 for i in items if i["status"] == "Sold"),
     }
     page = render_template(
-        "index.html", items=items, stats=stats, commit=COMMIT,
+        "index.html", items=shown, stats=stats, commit=COMMIT,
         categories=CATEGORIES, sizes=SIZES, conditions=CONDITIONS,
-        errors=errors or [], form=form or {},
+        active_category=category, errors=errors or [], form=form or {},
     )
     return page, status_code
 
@@ -131,7 +146,15 @@ def buy_item(item_id):
 
 @app.route("/api/items")
 def api_items():
-    return jsonify(items)
+    category = request.args.get("category") or None
+    status = request.args.get("status") or None
+    max_price = request.args.get("max_price")
+    if max_price is not None:
+        try:
+            max_price = int(max_price)
+        except ValueError:
+            return jsonify({"error": "max_price must be a whole number"}), 400
+    return jsonify(filter_items(category, status, max_price))
 
 
 @app.route("/health")
