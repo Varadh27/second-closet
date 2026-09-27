@@ -13,6 +13,33 @@
   </header>
 
   <main>
+    <section class="panel">
+      <h2>List an item</h2>
+      {% if errors %}
+      <ul class="errors">
+        {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+      <form method="POST" action="/items" class="listing-form">
+        <input name="name" placeholder="Item name" value="{{ form.get('name', '') }}" required maxlength="60">
+        <input name="seller" placeholder="Your name" value="{{ form.get('seller', '') }}" required maxlength="40">
+        <select name="category" required>
+          <option value="">Category</option>
+          {% for c in categories %}<option {% if form.get('category') == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+        </select>
+        <select name="size" required>
+          <option value="">Size</option>
+          {% for s in sizes %}<option {% if form.get('size') == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+        </select>
+        <select name="condition" required>
+          <option value="">Condition</option>
+          {% for c in conditions %}<option {% if form.get('condition') == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+        </select>
+        <input name="price" type="number" min="1" placeholder="Price (Rs)" value="{{ form.get('price', '') }}" required>
+        <button type="submit">List item</button>
+      </form>
+    </section>
+
     <section class="grid">
       {% for item in items %}
       <article class="card">
@@ -22,7 +49,7 @@
         <p class="seller">Seller: {{ item.seller }}</p>
       </article>
       {% else %}
-      <p class="empty">No items here yet.</p>
+      <p class="empty">No items here yet. List the first one!</p>
       {% endfor %}
     </section>
   </main>
