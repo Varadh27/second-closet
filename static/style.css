@@ -1,0 +1,122 @@
+:root {
+  --bg: #faf7f2;
+  --ink: #2b2622;
+  --muted: #7a6f66;
+  --accent: #b5543c;
+  --card: #ffffff;
+  --line: #e7dfd5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+header {
+  text-align: center;
+  padding: 2.5rem 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+header h1 { margin: 0; font-size: 2.4rem; letter-spacing: -0.02em; }
+.tagline { color: var(--muted); margin: 0.4rem 0; }
+.stats { font-weight: 600; color: var(--accent); margin: 0; }
+
+main { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.panel h2 { margin-top: 0; font-size: 1.2rem; }
+
+.listing-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+}
+
+input, select, button {
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover { opacity: 0.9; }
+
+.errors {
+  background: #fdecea;
+  color: #8a1f11;
+  border-radius: 8px;
+  padding: 0.6rem 1.6rem;
+}
+
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 1rem; }
+
+.filters a {
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  background: #fff;
+}
+
+.filters a.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+  position: relative;
+}
+
+.card h3 { margin: 0.2rem 0 0.4rem; font-size: 1.05rem; }
+.meta, .seller { color: var(--muted); font-size: 0.88rem; margin: 0.2rem 0; }
+.price { font-size: 1.2rem; font-weight: 700; margin: 0.5rem 0; }
+.card button { width: 100%; margin-top: 0.5rem; }
+
+.badge {
+  font-size: 0.75rem;
+  background: #e6f4ea;
+  color: #1e6b34;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
+.card.sold { opacity: 0.6; }
+.card.sold .badge { background: #eee; color: #555; }
+
+.empty { color: var(--muted); }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--line);
+}

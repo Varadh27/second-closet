@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Second Closet</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Second Closet</h1>
+    <p class="tagline">A second-hand clothing marketplace. Give your clothes a second life.</p>
+  </header>
+
+  <main>
+    <section class="grid">
+      {% for item in items %}
+      <article class="card">
+        <h3>{{ item.name }}</h3>
+        <p class="meta">{{ item.category }} &middot; {{ item.size if item.size == 'Free Size' else 'Size ' ~ item.size }} &middot; {{ item.condition }}</p>
+        <p class="price">Rs {{ item.price }}</p>
+        <p class="seller">Seller: {{ item.seller }}</p>
+      </article>
+      {% else %}
+      <p class="empty">No items here yet.</p>
+      {% endfor %}
+    </section>
+  </main>
+
+  <footer>Second Closet &middot; commit {{ commit }}</footer>
+</body>
+</html>
