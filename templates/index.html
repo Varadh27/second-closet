@@ -41,6 +41,13 @@
       </form>
     </section>
 
+    <nav class="filters">
+      <a href="/" class="{% if not active_category %}active{% endif %}">All</a>
+      {% for c in categories %}
+      <a href="/?category={{ c }}" class="{% if active_category == c %}active{% endif %}">{{ c }}</a>
+      {% endfor %}
+    </nav>
+
     <section class="grid">
       {% for item in items %}
       <article class="card {% if item.status == 'Sold' %}sold{% endif %}">
